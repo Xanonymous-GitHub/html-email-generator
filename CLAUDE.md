@@ -45,88 +45,112 @@ This project serves as a React-based template for generating HTML emails. It dem
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
 
-### File Structure
+### File Structure (Refactored Architecture)
 ```
 src/
-├── components/          # React components for email sections
-│   ├── EmailBody.tsx   # Main content with success/failure counts
-│   ├── EmailHeader.tsx # Branded header with image
-│   ├── ResultTable.tsx # Tabular display of task results
-│   └── TableRow.tsx    # Individual result row with error handling
-├── layouts/
-│   └── EmailLayout.tsx # HTML document wrapper with meta tags
-├── pages/
-│   └── EmailTemplate.tsx # Main template orchestrator
-├── types/
-│   ├── errorMsgs.ts    # Error code to message mapping
-│   └── props.ts        # TypeScript interface definitions
+├── constants/           # Extracted constants for maintainability
+│   ├── emailStyles.ts  # Email-safe CSS styles
+│   ├── emailText.ts    # String literals and localization
+│   └── emailUrls.ts    # URL constants and link attributes
+├── types/               # Enhanced TypeScript definitions
+│   ├── email.ts        # Email-specific interfaces with readonly modifiers
+│   ├── task.ts         # Task execution types
+│   ├── ui.ts           # UI component patterns
+│   └── errorMsgs.ts    # Error code to message mapping
+├── utils/               # Business logic utilities
+│   ├── taskCalculations.ts # Success/failure counting logic
+│   └── errorMessages.ts     # Error message processing
+├── components/
+│   ├── base/           # Reusable base components
+│   │   ├── EmailTable.tsx # Email-safe table component
+│   │   └── EmailLink.tsx  # Styled link component
+│   ├── layout/         # Layout components
+│   │   ├── EmailDocumentLayout.tsx # HTML document wrapper
+│   │   └── EmailContentContainer.tsx # Main content container
+│   └── content/        # Content components
+│       ├── EmailHeader.tsx      # Header with notification image
+│       ├── TaskSummarySection.tsx # Summary with counts
+│       ├── TaskResultsTable.tsx  # Results table
+│       ├── TaskResultRow.tsx     # Individual result row
+│       ├── EmailFooter.tsx       # Footer content
+│       └── DetailLinkSection.tsx # Detail link section
+├── templates/          # Page templates
+│   └── TaskNotificationEmail.tsx # Main template orchestrator
+├── pages/              # Re-export for backwards compatibility
+│   └── EmailTemplate.tsx # Re-exports TaskNotificationEmail
 ├── generator.tsx       # Production CLI entry point
 └── main.tsx           # Development preview entry point
 ```
 
-## Component Architecture
+## Refactored Component Architecture (React 19.1+ & TypeScript 5.9+)
 
-### EmailLayout.tsx
-**Purpose**: HTML document wrapper providing proper email structure  
+### Design Principles
+This architecture follows React 19.1+ and TypeScript 5.9+ best practices:
+- **Separation of Concerns**: Business logic extracted to utilities
+- **Consistent Patterns**: All components follow the same structure
+- **Type Safety**: Readonly interfaces with explicit React.FC typing
+- **Maintainability**: Constants extracted, no string literals in JSX
+- **Email Compatibility**: HTML v4 compliant with email-safe styling
+
+### Base Components
+
+#### EmailTable.tsx
+**Purpose**: Reusable email-safe table component  
+**Features**:
+- Email client compatibility with `role="presentation"`
+- Consistent styling and width handling
+- Configurable table properties
+
+#### EmailLink.tsx
+**Purpose**: Styled link component for email clients  
+**Features**:
+- Consistent link styling extracted to constants
+- Email-safe security attributes (`target="_blank"`, `rel="noopener noreferrer"`)
+
+### Layout Components
+
+#### EmailDocumentLayout.tsx
+**Purpose**: HTML document wrapper with email-safe structure  
 **Responsibilities**:
-- HTML5 document structure with Chinese language declaration
-- Meta tags for email client compatibility
-- Base styling with email-safe CSS
-- Image preloading for performance
+- HTML5 document with proper meta tags
+- Email client compatibility headers
+- Preloading optimization for images
+- Chinese language declaration
 
 **Key Features**:
-- Chinese font family declaration (`黑體, sans-serif`)
-- 600px fixed width for email client compatibility
+- HTML v4 email client compatibility
+- 600px container width for email clients
 - Proper charset and viewport meta tags
 
-### EmailTemplate.tsx
-**Purpose**: Main template orchestrator and business logic  
+#### EmailContentContainer.tsx
+**Purpose**: Structured content container using table layout  
 **Responsibilities**:
-- Calculate success/failure counts from task results
-- Orchestrate component rendering
-- Provide structured layout with proper spacing
-- Include footer with XCC branding
+- Provides table-based container structure
+- Manages content width and layout
 
-**Props Interface**:
-```typescript
-interface EmailProps {
-  rows: TaskExecutionResultRow[];
-  detailLink: string;
-}
-```
+### Content Components
 
-### EmailHeader.tsx
-**Purpose**: Branded header section  
+#### EmailHeader.tsx
+**Purpose**: Header with notification image  
 **Responsibilities**:
-- Display company/system branding
-- Provide visual hierarchy
-- Maintain consistent header styling
+- Display branded header image
+- Maintain consistent header structure
+- Email-safe image attributes
 
-### EmailBody.tsx
-**Purpose**: Main content section with summary and instructions  
+#### TaskSummarySection.tsx
+**Purpose**: Task execution summary with instructions  
 **Responsibilities**:
-- Display greeting and system notification disclaimer (example content)
-- Show success/failure count summary with color coding
-- Provide instructions for next steps with actionable links (example: XCC system references)
-- Embed result table display
-- Include detail link for comprehensive information
+- Display system notification disclaimer
+- Show success/failure counts with color coding
+- Provide user instructions with action links
+- All text content extracted to constants
 
-**Props Interface**:
-```typescript
-interface EmailBodyProps {
-  resultTable: ReactNode;
-  taskSystemLink: string;
-  successCount: number;
-  failureCount: number;
-}
-```
-
-### ResultTable.tsx
+#### TaskResultsTable.tsx
 **Purpose**: Tabular display of task execution results  
 **Responsibilities**:
-- Create accessible table structure with proper headers
-- Apply email-safe styling with borders and spacing
-- Map over result rows for dynamic content generation
+- Create accessible table with proper headers
+- Email-safe table styling
+- Dynamic header generation from constants
 
 **Table Structure**:
 | Column | Purpose | Alignment |
@@ -137,13 +161,60 @@ interface EmailBodyProps {
 | 執行結果 | Success/Failure status | Center |
 | 錯誤訊息 | Error messages (if any) | Left |
 
-### TableRow.tsx
+#### TaskResultRow.tsx
 **Purpose**: Individual result row with error handling  
 **Responsibilities**:
-- Determine success/failure status based on error signs
-- Apply conditional styling (red for failures)
-- Map error codes to user-friendly Chinese messages
-- Handle multiple error conditions per task
+- Determine success/failure status using utility functions
+- Apply conditional styling based on status
+- Display formatted error messages
+- Handle multiple error conditions
+
+#### EmailFooter.tsx
+**Purpose**: Footer with closing message and signature  
+**Responsibilities**:
+- Display closing message
+- Include system signature
+- Maintain consistent footer styling
+
+#### DetailLinkSection.tsx
+**Purpose**: Additional information access link  
+**Responsibilities**:
+- Provide instructions for detailed information
+- Display clickable detail link
+
+### Template Orchestrator
+
+#### TaskNotificationEmail.tsx
+**Purpose**: Main template orchestrator with clean architecture  
+**Responsibilities**:
+- Orchestrate all email components
+- Use utility functions for business logic calculation
+- Maintain clean separation of concerns
+- Provide single entry point for email generation
+
+**Props Interface**:
+```typescript
+interface EmailProps {
+  readonly rows: readonly TaskExecutionResultRow[];
+  readonly detailLink: string;
+}
+```
+
+### Business Logic Layer
+
+#### taskCalculations.ts
+**Purpose**: Success/failure counting and task processing  
+**Key Functions**:
+- `calculateTaskSummary()`: Count success/failure rates
+- `processTaskResult()`: Process individual task results
+- `isTaskSuccessful()`: Determine task success status
+
+#### errorMessages.ts
+**Purpose**: Error message processing and formatting  
+**Key Functions**:
+- `getFormattedErrorMessages()`: Format errors with bullet points
+- `isSuccessResult()`: Check if result indicates success
+- Error code to message mapping utilities
 
 **Error Handling Logic**:
 ```typescript
@@ -415,13 +486,26 @@ pnpm build --analyze
 - **2025-08-16**: Created comprehensive documentation (CLAUDE.md + enhanced README.md)
 - **2025-08-16**: Implemented auto-update mechanism for documentation maintenance
 - **2025-08-16**: Validated build process, TypeScript compilation, and CLI functionality
+- **2025-08-16**: ✨ MAJOR REFACTOR: Comprehensive architecture overhaul following React 19.1+ and TypeScript 5.9+ best practices
+
+**Architecture Improvements (2025-08-16)**:
+- ✅ Complete separation of concerns with business logic extracted to utilities
+- ✅ Modern React 19.1+ patterns with explicit React.FC typing
+- ✅ TypeScript 5.9+ features with readonly interfaces and proper const assertions
+- ✅ Constants extraction: All string literals and styles moved to dedicated files
+- ✅ Clean component hierarchy: base → layout → content → templates
+- ✅ Enhanced type safety: Readonly modifiers throughout interface definitions
+- ✅ Biome 2+ compliance: All linting and formatting issues resolved
+- ✅ HTML v4 email compatibility: Maintained while improving code quality
+- ✅ Preserved exact render output: Refactoring maintains identical email generation
 
 **Documentation Status**:
-- ✅ Comprehensive CLAUDE.md with technical architecture and auto-update mechanism
+- ✅ Comprehensive CLAUDE.md with refactored architecture documentation
 - ✅ Enhanced README.md with professional presentation and examples
-- ✅ All code examples validated and tested
+- ✅ Updated component architecture diagrams and file structure
+- ✅ All code examples validated and tested with new architecture
 - ✅ Build process and CLI functionality confirmed working
-- ✅ TypeScript interfaces and error codes documented accurately
+- ✅ TypeScript interfaces and patterns documented with modern best practices
 
 **Upcoming Enhancements**:
 - Add email template customization options
@@ -460,6 +544,7 @@ When you (Claude Code AI Assistant) complete ANY task related to this project, y
 - **2025-08-16**: Updated documentation to clarify project as React email template with example content
 - **2025-08-16**: Corrected XCC references as personal tech workspace, clarified Chinese content as example
 - **2025-08-16**: Emphasized template/forkable nature and customization capabilities
+- **2025-08-16**: Updated README.md to align with new refactored architecture (constants, utils, component hierarchy)
 
 **Integration with SuperClaude Framework**:
 This project documentation is designed to work with the SuperClaude framework:

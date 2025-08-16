@@ -26,7 +26,7 @@ This project serves as a React-based template for generating professional, email
 
 ### Prerequisites
 
-- Node.js 18+ (with ES modules support)
+- Node.js 24+ (with ES modules support)
 - pnpm (recommended) or npm
 
 ### Installation
@@ -70,26 +70,26 @@ The generator accepts JSON input via stdin with the following structure (example
 
 ```typescript
 interface EmailProps {
-  detailLink: string;                    // URL for detailed information
-  rows: TaskExecutionResultRow[];        // Array of data rows
+  readonly detailLink: string;                    // URL for detailed information
+  readonly rows: readonly TaskExecutionResultRow[];        // Array of data rows
 }
 
 interface TaskExecutionResultRow {
-  taskID: string;                        // Unique identifier
-  systemCode: string;                    // System-specific code
-  errSigns: number[];                    // Error codes (empty array = success)
+  readonly taskID: string;                        // Unique identifier
+  readonly systemCode: string;                    // System-specific code
+  readonly errSigns: readonly number[];                    // Error codes (empty array = success)
 }
 ```
 
-*Note: These interfaces represent the example use case. Modify them in `src/types/props.ts` to match your data structure.*
+*Note: These interfaces represent the example use case. Modify them in `src/types/email.ts` and `src/types/task.ts` to match your data structure.*
 
 ### Error Codes (Example Content)
 
-| Code | Message | Description |
-|------|---------|-------------|
-| 0 | 未知的錯誤 | Unknown error occurred (example in Chinese) |
-| 1 | 系統碼無效/不存在 | System code is invalid or doesn't exist |
-| 2 | Task ID 不存在/權限不符 | Task ID not found or permission denied |
+| Code | Message          | Description                                 |
+|------|------------------|---------------------------------------------|
+| 0    | 未知的錯誤            | Unknown error occurred (example in Chinese) |
+| 1    | 系統碼無效/不存在        | System code is invalid or doesn't exist     |
+| 2    | Task ID 不存在/權限不符 | Task ID not found or permission denied      |
 
 *Note: These are example error codes for demonstration. Customize according to your use case.*
 
@@ -164,28 +164,48 @@ This starts a Vite development server where you can preview the email template w
 
 1. **Local Development**: Use `pnpm dev` for live preview
 2. **Edit Components**: Modify React components in `src/components/`
-3. **Test Changes**: Preview updates automatically in browser
-4. **Build & Test**: Run `pnpm build` and test with CLI commands
-5. **Validate**: Ensure emails render correctly in target email clients
+3. **Update Constants**: Modify styling, text, or URLs in `src/constants/`
+4. **Business Logic**: Update utility functions in `src/utils/` for custom calculations
+5. **Test Changes**: Preview updates automatically in browser
+6. **Build & Test**: Run `pnpm build` and test with CLI commands
+7. **Validate**: Ensure emails render correctly in target email clients
 
 ### Project Structure
 
 ```
 src/
-├── components/          # React components
-│   ├── EmailBody.tsx   # Main content with counts & instructions
-│   ├── EmailHeader.tsx # Branded header with image
-│   ├── ResultTable.tsx # Task results table
-│   └── TableRow.tsx    # Individual result row
-├── layouts/
-│   └── EmailLayout.tsx # HTML document wrapper
-├── pages/
-│   └── EmailTemplate.tsx # Main template orchestrator
-├── types/
-│   ├── errorMsgs.ts    # Error code mappings
-│   └── props.ts        # TypeScript interfaces
-├── generator.tsx       # CLI entry point
-└── main.tsx           # Development entry point
+├── constants/           # Extracted constants for maintainability
+│   ├── emailStyles.ts  # Email-safe CSS styles
+│   ├── emailText.ts    # String literals and localization
+│   └── emailUrls.ts    # URL constants and link attributes
+├── types/               # Enhanced TypeScript definitions
+│   ├── email.ts        # Email-specific interfaces with readonly modifiers
+│   ├── task.ts         # Task execution types
+│   ├── ui.ts           # UI component patterns
+│   └── errorMsgs.ts    # Error code to message mapping
+├── utils/               # Business logic utilities
+│   ├── taskCalculations.ts # Success/failure counting logic
+│   └── errorMessages.ts     # Error message processing
+├── components/
+│   ├── base/           # Reusable base components
+│   │   ├── EmailTable.tsx # Email-safe table component
+│   │   └── EmailLink.tsx  # Styled link component
+│   ├── layout/         # Layout components
+│   │   ├── EmailDocumentLayout.tsx # HTML document wrapper
+│   │   └── EmailContentContainer.tsx # Main content container
+│   └── content/        # Content components
+│       ├── EmailHeader.tsx      # Header with notification image
+│       ├── TaskSummarySection.tsx # Summary with counts
+│       ├── TaskResultsTable.tsx  # Results table
+│       ├── TaskResultRow.tsx     # Individual result row
+│       ├── EmailFooter.tsx       # Footer content
+│       └── DetailLinkSection.tsx # Detail link section
+├── templates/          # Page templates
+│   └── TaskNotificationEmail.tsx # Main template orchestrator
+├── pages/              # Re-export for backwards compatibility
+│   └── EmailTemplate.tsx # Re-exports TaskNotificationEmail
+├── generator.tsx       # Production CLI entry point
+└── main.tsx           # Development preview entry point
 ```
 
 ### Code Quality
@@ -216,11 +236,12 @@ Test generated emails in multiple clients:
 
 The email template can be customized by modifying:
 
-- **Styling**: Inline styles in component files
-- **Layout**: Table structure in `EmailLayout.tsx`
-- **Content**: Text and messaging in `EmailBody.tsx` (currently shows example content)
-- **Branding**: Header image and footer in respective components
-- **Data Structure**: TypeScript interfaces in `src/types/props.ts` to match your use case
+- **Styling**: Constants in `src/constants/emailStyles.ts` for consistent styling
+- **Content**: Text constants in `src/constants/emailText.ts` (currently shows example content)
+- **URLs**: Link configurations in `src/constants/emailUrls.ts`
+- **Layout**: Table structure in `src/components/layout/EmailDocumentLayout.tsx`
+- **Business Logic**: Utility functions in `src/utils/` for calculations and formatting
+- **Data Structure**: TypeScript interfaces in `src/types/email.ts` and `src/types/task.ts` to match your use case
 - **Error Messages**: Mappings in `src/types/errorMsgs.ts` (example content)
 - **Language**: All text content can be changed from the example Chinese to any language
 
@@ -330,18 +351,15 @@ pnpm build --analyze
 
 ### Code Standards
 
-- **TypeScript**: Strict mode, no implicit any
-- **React**: Function components with proper typing
-- **Styling**: Inline styles only (email compatibility)
-- **Formatting**: Biome configuration (tabs, double quotes)
+- **TypeScript**: Strict mode, readonly interfaces, explicit React.FC typing
+- **React**: Function components with React 19.1+ patterns and modern hooks
+- **Architecture**: Separation of concerns with business logic in utilities
+- **Constants**: All string literals and styles extracted to dedicated files
+- **Styling**: Email-safe inline styles with constant extraction
+- **Formatting**: Biome configuration (tabs, double quotes, import organization)
 - **Commits**: Conventional commit messages
-
-## License
-
-This project is part of XCC (xanonymous's personal tech workspace) and serves as an open template. Feel free to fork and customize for your own email generation needs.
 
 ## Related Documentation
 
-- [`CLAUDE.md`](./CLAUDE.md) - Comprehensive technical documentation
 - [Vite Documentation](https://vitejs.dev/) - Build tool documentation
 - [React Email Best Practices](https://react.email/) - Email development guidelines
