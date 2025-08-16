@@ -1,12 +1,9 @@
 import type React from "react";
-import {
-	EMAIL_COLORS,
-	EMAIL_CONTENT_STYLES,
-} from "../../constants/emailStyles";
-import { EMAIL_CONTENT_TEXT, EMAIL_LINK_TEXT } from "../../constants/emailText";
-import { EMAIL_URLS } from "../../constants/emailUrls";
-import type { TaskSummarySectionProps } from "../../types/email";
-import { EmailLink } from "../base/EmailLink";
+import { EmailLink } from "@/components/base/EmailLink";
+import { EMAIL_COLORS, EMAIL_CONTENT_STYLES } from "@/constants/emailStyles";
+import { EMAIL_CONTENT_TEXT, EMAIL_LINK_TEXT } from "@/constants/emailText";
+import { EMAIL_URLS } from "@/constants/emailUrls";
+import type { TaskSummarySectionProps } from "@/types/email";
 
 /**
  * Task summary section with success/failure counts and instructions

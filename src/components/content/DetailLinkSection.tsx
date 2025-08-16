@@ -1,8 +1,8 @@
 import type React from "react";
-import { EMAIL_CONTENT_STYLES } from "../../constants/emailStyles";
-import { EMAIL_CONTENT_TEXT } from "../../constants/emailText";
-import type { DetailLinkSectionProps } from "../../types/email";
-import { EmailLink } from "../base/EmailLink";
+import { EmailLink } from "@/components/base/EmailLink";
+import { EMAIL_CONTENT_STYLES } from "@/constants/emailStyles";
+import { EMAIL_CONTENT_TEXT } from "@/constants/emailText";
+import type { DetailLinkSectionProps } from "@/types/email";
 
 /**
  * Detail link section with instructions and link

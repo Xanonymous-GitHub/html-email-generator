@@ -1,7 +1,7 @@
 import type React from "react";
-import { EMAIL_LINK_STYLES } from "../../constants/emailStyles";
-import { EMAIL_LINK_ATTRIBUTES } from "../../constants/emailUrls";
-import type { EmailLinkProps } from "../../types/email";
+import { EMAIL_LINK_STYLES } from "@/constants/emailStyles";
+import { EMAIL_LINK_ATTRIBUTES } from "@/constants/emailUrls";
+import type { EmailLinkProps } from "@/types/email";
 
 /**
  * Email-safe link component with consistent styling

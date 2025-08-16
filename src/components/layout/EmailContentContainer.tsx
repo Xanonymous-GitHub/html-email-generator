@@ -1,10 +1,10 @@
 import type React from "react";
+import { EmailTable } from "@/components/base/EmailTable";
 import {
 	EMAIL_LAYOUT_DIMENSIONS,
 	EMAIL_LAYOUT_STYLES,
-} from "../../constants/emailStyles";
-import type { EmailContentContainerProps } from "../../types/email";
-import { EmailTable } from "../base/EmailTable";
+} from "@/constants/emailStyles";
+import type { EmailContentContainerProps } from "@/types/email";
 
 /**
  * Email content container

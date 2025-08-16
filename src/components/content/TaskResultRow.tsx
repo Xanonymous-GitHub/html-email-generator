@@ -1,11 +1,11 @@
 import type React from "react";
-import { EMAIL_COLORS, EMAIL_TABLE_STYLES } from "../../constants/emailStyles";
-import { EMAIL_TABLE_TEXT } from "../../constants/emailText";
-import type { TaskResultRowProps } from "../../types/email";
+import { EMAIL_COLORS, EMAIL_TABLE_STYLES } from "@/constants/emailStyles";
+import { EMAIL_TABLE_TEXT } from "@/constants/emailText";
+import type { TaskResultRowProps } from "@/types/email";
 import {
 	getFormattedErrorMessages,
 	isSuccessResult,
-} from "../../utils/errorMessages";
+} from "@/utils/errorMessages";
 
 /**
  * Individual task result row with error handling

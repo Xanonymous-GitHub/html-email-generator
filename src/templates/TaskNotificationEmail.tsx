@@ -1,14 +1,14 @@
 import type React from "react";
-import { DetailLinkSection } from "../components/content/DetailLinkSection";
-import { EmailFooter } from "../components/content/EmailFooter";
-import { EmailHeader } from "../components/content/EmailHeader";
-import { TaskResultsTable } from "../components/content/TaskResultsTable";
-import { TaskSummarySection } from "../components/content/TaskSummarySection";
-import { EmailContentContainer } from "../components/layout/EmailContentContainer";
-import { EmailDocumentLayout } from "../components/layout/EmailDocumentLayout";
-import { EMAIL_CONTENT_STYLES } from "../constants/emailStyles";
-import type { EmailProps } from "../types/email";
-import { calculateTaskSummary } from "../utils/taskCalculations";
+import { DetailLinkSection } from "@/components/content/DetailLinkSection";
+import { EmailFooter } from "@/components/content/EmailFooter";
+import { EmailHeader } from "@/components/content/EmailHeader";
+import { TaskResultsTable } from "@/components/content/TaskResultsTable";
+import { TaskSummarySection } from "@/components/content/TaskSummarySection";
+import { EmailContentContainer } from "@/components/layout/EmailContentContainer";
+import { EmailDocumentLayout } from "@/components/layout/EmailDocumentLayout";
+import { EMAIL_CONTENT_STYLES } from "@/constants/emailStyles";
+import type { EmailProps } from "@/types/email";
+import { calculateTaskSummary } from "@/utils/taskCalculations";
 
 /**
  * Main task notification email template

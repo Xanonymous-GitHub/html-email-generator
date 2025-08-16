@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { EmailTemplate } from "./pages/EmailTemplate.tsx";
-import type { EmailProps } from "./types/props.ts";
+import { EmailTemplate } from "@/pages/EmailTemplate.tsx";
+import type { EmailProps } from "@/types/props.ts";
 
 async function main() {
 	const chunks: Buffer[] = [];

@@ -4,7 +4,7 @@
  */
 
 // Import the error message map from the existing location
-import { serialToErrorMsg } from "../types/errorMsgs";
+import { serialToErrorMsg } from "@/types/errorMsgs";
 
 // Re-export for convenience
 export { serialToErrorMsg };

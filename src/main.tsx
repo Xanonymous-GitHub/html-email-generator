@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { EmailTemplate } from "./pages/EmailTemplate.tsx";
-import type { EmailProps } from "./types/props.ts";
+import { EmailTemplate } from "@/pages/EmailTemplate.tsx";
+import type { EmailProps } from "@/types/props.ts";
 
 const testProps = {
 	detailLink: "https://task.xcc.tw/dashboard/tasks",

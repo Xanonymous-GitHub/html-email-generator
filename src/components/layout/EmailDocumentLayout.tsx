@@ -1,12 +1,12 @@
 import type React from "react";
+import { EmailTable } from "@/components/base/EmailTable";
 import {
 	EMAIL_LAYOUT_DIMENSIONS,
 	EMAIL_LAYOUT_STYLES,
-} from "../../constants/emailStyles";
-import { EMAIL_DOCUMENT_TEXT } from "../../constants/emailText";
-import { EMAIL_URLS } from "../../constants/emailUrls";
-import type { EmailDocumentLayoutProps } from "../../types/email";
-import { EmailTable } from "../base/EmailTable";
+} from "@/constants/emailStyles";
+import { EMAIL_DOCUMENT_TEXT } from "@/constants/emailText";
+import { EMAIL_URLS } from "@/constants/emailUrls";
+import type { EmailDocumentLayoutProps } from "@/types/email";
 
 /**
  * Email document layout wrapper

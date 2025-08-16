@@ -2,9 +2,9 @@ import type React from "react";
 import {
 	EMAIL_LAYOUT_DIMENSIONS,
 	EMAIL_TABLE_STYLES,
-} from "../../constants/emailStyles";
-import { EMAIL_TABLE_TEXT } from "../../constants/emailText";
-import type { TaskResultsTableProps } from "../../types/email";
+} from "@/constants/emailStyles";
+import { EMAIL_TABLE_TEXT } from "@/constants/emailText";
+import type { TaskResultsTableProps } from "@/types/email";
 import { TaskResultRow } from "./TaskResultRow";
 
 /**

@@ -1,6 +1,6 @@
 import type React from "react";
-import { EMAIL_LAYOUT_DIMENSIONS } from "../../constants/emailStyles";
-import type { EmailTableProps } from "../../types/email";
+import { EMAIL_LAYOUT_DIMENSIONS } from "@/constants/emailStyles";
+import type { EmailTableProps } from "@/types/email";
 
 /**
  * Base email-safe table component

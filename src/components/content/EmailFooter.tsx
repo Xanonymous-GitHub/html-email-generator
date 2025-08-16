@@ -2,9 +2,9 @@ import type React from "react";
 import {
 	EMAIL_CONTENT_STYLES,
 	EMAIL_LAYOUT_DIMENSIONS,
-} from "../../constants/emailStyles";
-import { EMAIL_CONTENT_TEXT } from "../../constants/emailText";
-import type { EmailFooterProps } from "../../types/email";
+} from "@/constants/emailStyles";
+import { EMAIL_CONTENT_TEXT } from "@/constants/emailText";
+import type { EmailFooterProps } from "@/types/email";
 
 /**
  * Email footer with closing message and signature
